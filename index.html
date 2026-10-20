@@ -723,12 +723,12 @@ function dashedLine(ctx, x1, y, x2) {
   ctx.restore();
 }
 
-/* ---------------- 雷达图：短名 / 分组 / 绘制 ---------------- */
-/* 9 个细分能力的短名，用作雷达图轴标签（完整名太长，9 轴会互相挤压） */
+/* ---------------- 雷达图：轴标签 / 分组 / 绘制 ---------------- */
+/* 9 个细分能力的轴标签，统一用完整的 6 字名称（与报告正文、明细表一致，避免读者对不上） */
 var SUB_SHORT = {
-  space: '空间形态', build: '工程落地', site: '场地逻辑',
-  value: '项目价值', format: '业态搭建', resource: '资源统筹',
-  narrative: '内容叙事', reach: '传播效果', visual: '品牌视觉'
+  space: '空间形态把控', build: '工程落地推演', site: '场地逻辑研判',
+  value: '项目价值研判', format: '业态逻辑搭建', resource: '资源统筹策划',
+  narrative: '内容叙事表达', reach: '传播效果把控', visual: '品牌视觉感知'
 };
 function shortOf(key) { return SUB_SHORT[key] || ''; }
 
@@ -811,16 +811,19 @@ function drawRadar(ctx, cx, cy, R, items) {
     ctx.stroke();
   }
 
-  /* ⑤ 轴标签 */
+  /* ⑤ 轴标签：完整 6 字名称，字号 20 让最外侧标签不越出卡片 */
   var LR = R + 42;
-  ctx.font = 'bold 22px sans-serif';
+  ctx.font = 'bold 20px sans-serif';
   ctx.textBaseline = 'middle';
   for (i = 0; i < n; i++) {
     var a2 = -Math.PI / 2 + (Math.PI * 2 / n) * i;
     var cs = Math.cos(a2);
     ctx.textAlign = cs > 0.45 ? 'left' : (cs < -0.45 ? 'right' : 'center');
+    var lx2 = cx + cs * LR;
+    /* 正下方相邻两轴都是 center 对齐，会挤在一起，沿切向各推开一点 */
+    if (Math.abs(cs) > 0.05 && ctx.textAlign === 'center') { lx2 += cs > 0 ? 10 : -10; }
     ctx.fillStyle = C.text;
-    ctx.fillText(shortOf(items[i].key), cx + cs * LR, cy + Math.sin(a2) * LR);
+    ctx.fillText(shortOf(items[i].key), lx2, cy + Math.sin(a2) * LR);
   }
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
@@ -1270,7 +1273,7 @@ if (typeof window !== 'undefined') {
   /* ---------------- 九维雷达图（SVG，与长图同构） ---------------- */
   function radarSvg(r) {
     var items = r.detailScores, n = items.length;
-    var cx = 170, cy = 130, R = 86, LR = 102;
+    var cx = 186, cy = 132, R = 94, LR = 118;      // LR 外移到 118，给 6 字标签留位
     var i, k, p, poly, ang, cs, lx, ly, anchor;
 
     function pt(idx, ratio) {
@@ -1278,7 +1281,7 @@ if (typeof window !== 'undefined') {
       return [cx + Math.cos(a) * R * ratio, cy + Math.sin(a) * R * ratio];
     }
 
-    var s = '<svg class="r-radar" viewBox="0 0 340 268" preserveAspectRatio="xMidYMid meet">';
+    var s = '<svg class="r-radar" viewBox="0 0 372 268" preserveAspectRatio="xMidYMid meet">';
 
     for (k = 5; k >= 1; k--) {
       poly = [];
@@ -1312,8 +1315,10 @@ if (typeof window !== 'undefined') {
       lx = cx + cs * LR;
       ly = cy + Math.sin(ang) * LR;
       anchor = cs > 0.45 ? 'start' : (cs < -0.45 ? 'end' : 'middle');
-      s += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 3.6).toFixed(1) + '" text-anchor="' + anchor +
-           '" font-size="10.5" font-weight="700" fill="#22313F">' + P.shortOf(items[i].key) + '</text>';
+      /* 正下方相邻两轴都是 middle 对齐，会挤在一起，沿切向各推开一点 */
+      if (Math.abs(cs) > 0.05 && anchor === 'middle') { lx += cs > 0 ? 6 : -6; }
+      s += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 3.5).toFixed(1) + '" text-anchor="' + anchor +
+           '" font-size="10" font-weight="700" fill="#22313F">' + P.shortOf(items[i].key) + '</text>';
     }
 
     return s + '</svg>';
