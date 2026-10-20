@@ -37,7 +37,7 @@
 
   /* ---------- 欢迎页 ---------- */
   #s-welcome{
-    padding:44px 28px 26px; color:#fff;
+    padding:24px 24px 20px; color:#fff;
     background-color:#38C976;
     background-image:
       linear-gradient(rgba(255,255,255,.14) 1px, transparent 1px),
@@ -45,26 +45,36 @@
     background-size:60px 60px;
   }
   .decor{position:absolute;opacity:.9;animation:floaty 6s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(0,0,0,.12));}
-  .d1{top:8%;left:8%;font-size:46px;}
-  .d2{bottom:24%;right:6%;font-size:54px;animation-delay:-2s;}
-  .d3{top:26%;right:9%;font-size:36px;animation:spin 14s linear infinite;}
-  .d4{bottom:34%;left:6%;font-size:40px;animation-delay:-4s;}
+  .d1{top:5%;left:6%;font-size:44px;}
+  .d2{top:4%;right:5%;bottom:auto;font-size:40px;animation-delay:-2s;}
+  .d3{top:26%;right:9%;font-size:36px;animation:spin 14s linear infinite;display:none;}
+  .d4{bottom:34%;left:6%;font-size:40px;animation-delay:-4s;display:none;}
   @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-13px) rotate(8deg)}}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .w-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;}
+  .w-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;z-index:2;}
+  .w-scroll::-webkit-scrollbar{width:0;}
+  .w-body{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;
+    min-height:100%;justify-content:center;padding-bottom:4px;}
+  /* 说明卡：测评对象 / 作答要求 / 局限性提示 */
+  .w-intro{margin-top:16px;padding:14px 15px;border-radius:14px;background:rgba(255,255,255,.17);
+    border:1px solid rgba(255,255,255,.32);}
+  .w-intro p{margin:0;font-size:12px;line-height:1.8;font-weight:600;color:rgba(255,255,255,.97);}
+  .w-intro p + p{margin-top:9px;padding-top:9px;border-top:1px dashed rgba(255,255,255,.3);}
+  .w-intro p.w-warn{margin-top:9px;padding-top:9px;border-top:1px dashed rgba(255,255,255,.3);
+    font-size:11.5px;font-weight:600;line-height:1.7;color:rgba(255,255,255,.82);}
   .hero-badge{
-    width:100px;height:100px;border-radius:32px;display:flex;align-items:center;justify-content:center;
-    font-size:52px;background:linear-gradient(135deg,#FFE27A,#FFB03A);
+    width:84px;height:84px;border-radius:28px;display:flex;align-items:center;justify-content:center;
+    font-size:44px;background:linear-gradient(135deg,#FFE27A,#FFB03A);
     box-shadow:inset 0 -6px 0 rgba(0,0,0,.12), inset 0 6px 0 rgba(255,255,255,.45), 0 12px 20px rgba(0,0,0,.16);
-    animation:jelly 2.6s ease-in-out infinite; margin-bottom:26px;
+    animation:jelly 2.6s ease-in-out infinite; margin-bottom:14px;
   }
   @keyframes jelly{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-8px) scale(1.04)}60%{transform:translateY(-4px) scale(.98)}}
-  .hero-title{font-size:31px;font-weight:900;line-height:1.24;letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.08);}
+  .hero-title{font-size:28px;font-weight:900;line-height:1.24;letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.08);}
   .hero-hl{display:inline-block;margin-top:3px;padding:0 8px;color:#1E5B37;background:#FFE27A;border-radius:9px;}
-  .hero-sub{margin-top:18px;font-size:15px;font-weight:700;color:rgba(255,255,255,.92);}
-  .hero-sub2{margin-top:6px;font-size:13px;color:rgba(255,255,255,.72);}
-  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px;}
-  .chip{padding:6px 13px;border-radius:20px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.55);font-size:12px;font-weight:700;color:#fff;}
+  .hero-sub{margin-top:11px;font-size:14px;font-weight:700;color:rgba(255,255,255,.92);}
+  .hero-sub2{margin-top:5px;font-size:12.5px;color:rgba(255,255,255,.74);}
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:14px;}
+  .chip{padding:5px 11px;border-radius:20px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.55);font-size:11.5px;font-weight:700;color:#fff;}
   .w-tip{margin-top:11px;text-align:center;font-size:11px;color:rgba(255,255,255,.62);}
 
   /* ---------- 3D 按钮 ---------- */
@@ -74,6 +84,7 @@
     transition:transform .08s ease,border-bottom-width .08s ease,margin-bottom .08s ease;cursor:pointer;
   }
   .duo-btn:active,.duo-btn.hover{transform:translateY(7px);border-bottom-width:0;margin-bottom:7px;background:#F2FBF5;}
+  #s-welcome .duo-btn{flex-shrink:0;margin-top:10px;}
 
   /* ---------- 答题页 ---------- */
   #s-quiz{background:#fff;}
@@ -139,6 +150,14 @@
   .r-fill{height:100%;border-radius:4px;width:0;transition:width .8s cubic-bezier(.25,1,.4,1);}
   .r-cmt{display:flex;align-items:center;font-size:11.5px;color:var(--sub);}
   .r-level{flex-shrink:0;margin-right:7px;padding:1px 7px;border-radius:4px;background:#F1F6F9;color:#7A8A97;font-weight:700;}
+  /* 雷达图 */
+  .r-radar{display:block;width:100%;height:auto;}
+  .r-legend{display:flex;justify-content:center;gap:18px;margin-top:2px;}
+  .r-lg{display:flex;align-items:center;font-size:11.5px;font-weight:700;color:var(--sub);}
+  .r-lg i{width:8px;height:8px;border-radius:50%;margin-right:5px;}
+  .r-lg b{margin-left:4px;font-size:13px;color:var(--text);}
+  .r-radar-note{margin-top:11px;padding:10px 12px;border-radius:10px;background:#F7FAFC;
+    font-size:11.5px;line-height:1.72;color:var(--sub);}
   .r-label{font-size:11px;font-weight:700;color:var(--light);letter-spacing:.5px;}
   .r-value{margin-top:6px;font-size:17px;font-weight:900;color:var(--green-dark);line-height:1.4;}
   .r-value.dark{color:var(--text);font-size:15px;}
@@ -182,20 +201,26 @@
     <div class="decor d2">🏛️</div>
     <div class="decor d3">🧭</div>
     <div class="decor d4">📐</div>
-    <div class="w-body">
-      <div class="hero-badge">🏆</div>
-      <div class="hero-title">专业能力边界</div>
-      <div class="hero-title"><span class="hero-hl">探索测评</span></div>
-      <div class="hero-sub">建筑与景观设计专项评估</div>
-      <div class="hero-sub2">只需 3 分钟，生成你的多维能力模型</div>
-      <div class="chips">
-        <div class="chip">⏱ 约 3 分钟</div>
-        <div class="chip">📋 30 道题</div>
-        <div class="chip">📊 9 项细分能力</div>
+    <div class="w-scroll">
+      <div class="w-body">
+        <div class="hero-badge">🏆</div>
+        <div class="hero-title">专业能力边界</div>
+        <div class="hero-title"><span class="hero-hl">探索测评</span></div>
+        <div class="hero-sub">建筑与景观设计专项评估</div>
+        <div class="hero-sub2">30 道题，生成你的多维能力模型</div>
+        <div class="chips">
+          <div class="chip">📋 30 道题</div>
+          <div class="chip">📊 9 项细分能力</div>
+          <div class="chip">🎯 3 个方向</div>
+        </div>
+        <div class="w-intro">
+          <p>本测评针对建筑景观专业学生设计，针对建筑景观设计、项目策划统筹、品牌宣传推广三个就业方向，从9个维度开展能力评价，给出职业方向适配性建议。</p>
+          <p>请依据你日常真实状态选择，答案无对错之分，仅用于个人能力画像诊断。提交后自动生成个人能力测评报告。</p>
+          <p class="w-warn">⚠️ 测评方法具有局限性，结果仅供个人职业规划参考。</p>
+        </div>
       </div>
     </div>
     <div class="duo-btn" id="btn-start">开始测评</div>
-    <div class="w-tip">结果仅供个人职业规划参考</div>
   </div>
 
   <!-- ============ 答题页 ============ -->
@@ -698,6 +723,109 @@ function dashedLine(ctx, x1, y, x2) {
   ctx.restore();
 }
 
+/* ---------------- 雷达图：短名 / 分组 / 绘制 ---------------- */
+/* 9 个细分能力的短名，用作雷达图轴标签（完整名太长，9 轴会互相挤压） */
+var SUB_SHORT = {
+  space: '空间形态', build: '工程落地', site: '场地逻辑',
+  value: '项目价值', format: '业态搭建', resource: '资源统筹',
+  narrative: '内容叙事', reach: '传播效果', visual: '品牌视觉'
+};
+function shortOf(key) { return SUB_SHORT[key] || ''; }
+
+/* 3 大维度配色：雷达图顶点按「每 3 项一组」着色，与岗位方向图例对应 */
+var GROUP_COLORS = ['#2FB86B', '#3D8BE0', '#F0A227'];
+var GROUP_NAMES = ['设计', '策划', '品牌'];
+
+/** 雷达图下方的一句话结论：突出项 / 薄弱项，让图有文字解读 */
+function radarNote(report) {
+  var sorted = report.detailScores.slice().sort(function (a, b) { return b.score - a.score; });
+  function fmt(d) { return shortOf(d.key) + ' ' + d.score.toFixed(1); }
+  var hi = sorted.slice(0, 2).map(fmt).join('、');
+  var lo = sorted.slice(-2).reverse().map(fmt).join('、');
+  return '九项均分 ' + report.total.toFixed(1) + ' 分。相对突出：' + hi +
+         '；相对薄弱：' + lo + '，可作为近期补强重点。';
+}
+
+/**
+ * 在 Canvas 2D 上绘制九维雷达图
+ * @param {number} cx,cy 圆心  @param {number} R 外圈半径
+ * @param {Array} items detailScores
+ */
+function drawRadar(ctx, cx, cy, R, items) {
+  var n = items.length;
+  var i, k;
+
+  function pt(idx, ratio) {
+    var a = -Math.PI / 2 + (Math.PI * 2 / n) * idx;   // 从正上方开始顺时针
+    return [cx + Math.cos(a) * R * ratio, cy + Math.sin(a) * R * ratio];
+  }
+
+  /* ① 5 层底网格 */
+  for (k = 5; k >= 1; k--) {
+    ctx.beginPath();
+    for (i = 0; i < n; i++) {
+      var g = pt(i, k / 5);
+      if (i === 0) { ctx.moveTo(g[0], g[1]); } else { ctx.lineTo(g[0], g[1]); }
+    }
+    ctx.closePath();
+    if (k === 5) { ctx.fillStyle = '#FBFDFE'; ctx.fill(); }
+    ctx.strokeStyle = k === 5 ? '#DCE7EC' : '#EEF3F6';
+    ctx.lineWidth = k === 5 ? 2 : 1.4;
+    ctx.stroke();
+  }
+
+  /* ② 轴线 */
+  for (i = 0; i < n; i++) {
+    var e = pt(i, 1);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(e[0], e[1]);
+    ctx.strokeStyle = '#E9F0F4';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+  }
+
+  /* ③ 数据多边形 */
+  ctx.beginPath();
+  for (i = 0; i < n; i++) {
+    var q = pt(i, Math.max(0.04, items[i].score / 10));
+    if (i === 0) { ctx.moveTo(q[0], q[1]); } else { ctx.lineTo(q[0], q[1]); }
+  }
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(56,201,118,0.20)';
+  ctx.fill();
+  ctx.strokeStyle = '#2FB86B';
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  /* ④ 顶点：白点 + 分组色描边 */
+  for (i = 0; i < n; i++) {
+    var v = pt(i, Math.max(0.04, items[i].score / 10));
+    ctx.beginPath();
+    ctx.arc(v[0], v[1], 7, 0, Math.PI * 2);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fill();
+    ctx.strokeStyle = GROUP_COLORS[Math.floor(i / 3)] || C.greenDeep;
+    ctx.lineWidth = 3.4;
+    ctx.stroke();
+  }
+
+  /* ⑤ 轴标签 */
+  var LR = R + 42;
+  ctx.font = 'bold 22px sans-serif';
+  ctx.textBaseline = 'middle';
+  for (i = 0; i < n; i++) {
+    var a2 = -Math.PI / 2 + (Math.PI * 2 / n) * i;
+    var cs = Math.cos(a2);
+    ctx.textAlign = cs > 0.45 ? 'left' : (cs < -0.45 ? 'right' : 'center');
+    ctx.fillStyle = C.text;
+    ctx.fillText(shortOf(items[i].key), cx + cs * LR, cy + Math.sin(a2) * LR);
+  }
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+}
+
 /* ---------------- 核心：排版 + 测量 ---------------- */
 function build(ctx, report, W) {
   W = W || W_DEFAULT;
@@ -751,6 +879,58 @@ function build(ctx, report, W) {
   });
 
   addGap(GAP);
+
+  /* ========== 1.5 九项能力雷达图 ========== */
+  var R_RAD = 150;
+  var radarAreaH = (R_RAD + 42) * 2 + 16;          // 圆 + 上下标签留白
+  var noteStr = radarNote(report);
+  var noteLines = wrap(ctx, noteStr, textW, F.body);
+  var cardRadarH = 40 * 2 + 46 + 6 + radarAreaH + 12 + 50 + noteLines.length * 33;
+
+  add(cardRadarH + GAP, function (c, y) {
+    drawCardBg(c, PAD, y, innerW, cardRadarH);
+    var cy = y + 40;
+    cy += drawCardTitle(c, padX, cy, '九项能力雷达图');
+    cy += 6;
+
+    drawRadar(c, W / 2, cy + radarAreaH / 2, R_RAD, report.detailScores);
+    cy += radarAreaH + 12;
+
+    /* 三维度图例：点色 = 雷达图顶点色，先量宽再居中 */
+    var lgW = [], lgTotal = 0;
+    report.jobFit.forEach(function (j, i) {
+      c.font = F.small;
+      var w1 = c.measureText(GROUP_NAMES[i]).width;
+      c.font = F.num;
+      var w2 = c.measureText(j.score.toFixed(1)).width;
+      lgW.push({ w: 15 + w1 + 6 + w2, w1: w1 });
+      lgTotal += 15 + w1 + 6 + w2;
+    });
+    lgTotal += 42 * (report.jobFit.length - 1);
+    var lgX = padX + Math.max(0, (textW - lgTotal) / 2);
+
+    report.jobFit.forEach(function (j, i) {
+      c.fillStyle = GROUP_COLORS[i];
+      c.beginPath();
+      c.arc(lgX, cy + 14, 7, 0, Math.PI * 2);
+      c.fill();
+
+      c.font = F.small;
+      c.fillStyle = C.sub;
+      c.fillText(GROUP_NAMES[i], lgX + 15, cy + 3);
+
+      c.font = F.num;
+      c.fillStyle = C.text;
+      c.fillText(j.score.toFixed(1), lgX + 15 + lgW[i].w1 + 6, cy + 1);
+
+      lgX += lgW[i].w + 42;
+    });
+    cy += 50;
+
+    c.font = F.body;
+    c.fillStyle = C.sub;
+    noteLines.forEach(function (l) { c.fillText(l, padX, cy); cy += 33; });
+  });
 
   /* ========== 2. 各维度能力评价 ========== */
   var rows1 = report.detailScores.map(function (d) {
@@ -981,7 +1161,15 @@ function paintReport(ctx, report, W) {
   return res.height;
 }
 
-var ReportPainter = { measureReport: measureReport, paintReport: paintReport, WIDTH: W_DEFAULT };
+var ReportPainter = {
+  measureReport: measureReport,
+  paintReport: paintReport,
+  WIDTH: W_DEFAULT,
+  shortOf: shortOf,
+  radarNote: radarNote,
+  GROUP_COLORS: GROUP_COLORS,
+  GROUP_NAMES: GROUP_NAMES
+};
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ReportPainter;
@@ -1079,6 +1267,67 @@ if (typeof window !== 'undefined') {
     }, 700);
   }
 
+  /* ---------------- 九维雷达图（SVG，与长图同构） ---------------- */
+  function radarSvg(r) {
+    var items = r.detailScores, n = items.length;
+    var cx = 170, cy = 130, R = 86, LR = 102;
+    var i, k, p, poly, ang, cs, lx, ly, anchor;
+
+    function pt(idx, ratio) {
+      var a = -Math.PI / 2 + (Math.PI * 2 / n) * idx;
+      return [cx + Math.cos(a) * R * ratio, cy + Math.sin(a) * R * ratio];
+    }
+
+    var s = '<svg class="r-radar" viewBox="0 0 340 268" preserveAspectRatio="xMidYMid meet">';
+
+    for (k = 5; k >= 1; k--) {
+      poly = [];
+      for (i = 0; i < n; i++) { p = pt(i, k / 5); poly.push(p[0].toFixed(1) + ',' + p[1].toFixed(1)); }
+      s += '<polygon points="' + poly.join(' ') + '" fill="' + (k === 5 ? '#FBFDFE' : 'none') +
+           '" stroke="' + (k === 5 ? '#DCE7EC' : '#EEF3F6') + '" stroke-width="' + (k === 5 ? 1.2 : 0.7) + '"/>';
+    }
+    for (i = 0; i < n; i++) {
+      p = pt(i, 1);
+      s += '<line x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) +
+           '" stroke="#E9F0F4" stroke-width="0.7"/>';
+    }
+
+    poly = [];
+    for (i = 0; i < n; i++) {
+      p = pt(i, Math.max(0.04, items[i].score / 10));
+      poly.push(p[0].toFixed(1) + ',' + p[1].toFixed(1));
+    }
+    s += '<polygon points="' + poly.join(' ') + '" fill="rgba(56,201,118,0.20)" stroke="#2FB86B"' +
+         ' stroke-width="1.6" stroke-linejoin="round"/>';
+
+    for (i = 0; i < n; i++) {
+      p = pt(i, Math.max(0.04, items[i].score / 10));
+      s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.6" fill="#fff" stroke="' +
+           P.GROUP_COLORS[Math.floor(i / 3)] + '" stroke-width="1.7"/>';
+    }
+
+    for (i = 0; i < n; i++) {
+      ang = -Math.PI / 2 + (Math.PI * 2 / n) * i;
+      cs = Math.cos(ang);
+      lx = cx + cs * LR;
+      ly = cy + Math.sin(ang) * LR;
+      anchor = cs > 0.45 ? 'start' : (cs < -0.45 ? 'end' : 'middle');
+      s += '<text x="' + lx.toFixed(1) + '" y="' + (ly + 3.6).toFixed(1) + '" text-anchor="' + anchor +
+           '" font-size="10.5" font-weight="700" fill="#22313F">' + P.shortOf(items[i].key) + '</text>';
+    }
+
+    return s + '</svg>';
+  }
+
+  function radarLegend(r) {
+    var h = '<div class="r-legend">';
+    r.jobFit.forEach(function (j, i) {
+      h += '<div class="r-lg"><i style="background:' + P.GROUP_COLORS[i] + '"></i>' +
+           P.GROUP_NAMES[i] + '<b>' + j.score.toFixed(1) + '</b></div>';
+    });
+    return h + '</div>';
+  }
+
   /* ---------------- 报告渲染 ---------------- */
   function renderReport() {
     var r = report, h = '';
@@ -1094,6 +1343,13 @@ if (typeof window !== 'undefined') {
       h += '<div class="r-chip"><span class="i">' + j.icon + '</span>' + j.shortName + ' ' + j.score.toFixed(1) + '</div>';
     });
     h += '</div></div>';
+
+    // 九项能力雷达图（图 + 文字解读）
+    h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>九项能力雷达图</div>';
+    h += radarSvg(r);
+    h += radarLegend(r);
+    h += '<div class="r-radar-note">' + P.radarNote(r) + '</div>';
+    h += '</div>';
 
     // 各维度能力评价
     h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>各维度能力评价</div>';
