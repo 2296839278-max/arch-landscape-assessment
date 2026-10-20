@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>建筑与景观综合能力测评</title>
+<meta name="description" content="30 道题、3 分钟，生成建筑与景观设计能力的三维诊断报告：9 项细分能力得分、岗位适配度、推荐方向与提升建议，可一键保存成长图。">
+<meta name="theme-color" content="#38C976">
+<meta property="og:type" content="website">
+<meta property="og:title" content="建筑与景观综合能力测评">
+<meta property="og:description" content="30 道题、3 分钟，生成你的专业能力诊断报告。">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<style>
+  :root{
+    --green:#38C976; --green-deep:#2BB064; --green-dark:#1E9A57;
+    --orange:#FF9F43; --text:#22313F; --sub:#647585; --light:#9BAAB6;
+    --line:#EEF3F6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:#38C976;
+    background-image:
+      linear-gradient(rgba(255,255,255,.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.14) 1px, transparent 1px);
+    background-size:60px 60px;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:20px; color:var(--text);
+  }
+  .device{
+    position:relative; width:375px; height:780px; background:#fff;
+    border-radius:44px; overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.25), 0 0 0 10px rgba(255,255,255,.55);
+  }
+  .screen{position:absolute;inset:0;display:none;flex-direction:column;}
+  .screen.on{display:flex;}
+
+  /* ---------- 欢迎页 ---------- */
+  #s-welcome{
+    padding:44px 28px 26px; color:#fff;
+    background-color:#38C976;
+    background-image:
+      linear-gradient(rgba(255,255,255,.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.14) 1px, transparent 1px);
+    background-size:60px 60px;
+  }
+  .decor{position:absolute;opacity:.9;animation:floaty 6s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(0,0,0,.12));}
+  .d1{top:8%;left:8%;font-size:46px;}
+  .d2{bottom:24%;right:6%;font-size:54px;animation-delay:-2s;}
+  .d3{top:26%;right:9%;font-size:36px;animation:spin 14s linear infinite;}
+  .d4{bottom:34%;left:6%;font-size:40px;animation-delay:-4s;}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-13px) rotate(8deg)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .w-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;}
+  .hero-badge{
+    width:100px;height:100px;border-radius:32px;display:flex;align-items:center;justify-content:center;
+    font-size:52px;background:linear-gradient(135deg,#FFE27A,#FFB03A);
+    box-shadow:inset 0 -6px 0 rgba(0,0,0,.12), inset 0 6px 0 rgba(255,255,255,.45), 0 12px 20px rgba(0,0,0,.16);
+    animation:jelly 2.6s ease-in-out infinite; margin-bottom:26px;
+  }
+  @keyframes jelly{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-8px) scale(1.04)}60%{transform:translateY(-4px) scale(.98)}}
+  .hero-title{font-size:31px;font-weight:900;line-height:1.24;letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.08);}
+  .hero-hl{display:inline-block;margin-top:3px;padding:0 8px;color:#1E5B37;background:#FFE27A;border-radius:9px;}
+  .hero-sub{margin-top:18px;font-size:15px;font-weight:700;color:rgba(255,255,255,.92);}
+  .hero-sub2{margin-top:6px;font-size:13px;color:rgba(255,255,255,.72);}
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px;}
+  .chip{padding:6px 13px;border-radius:20px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.55);font-size:12px;font-weight:700;color:#fff;}
+  .w-tip{margin-top:11px;text-align:center;font-size:11px;color:rgba(255,255,255,.62);}
+
+  /* ---------- 3D 按钮 ---------- */
+  .duo-btn{
+    width:100%;padding:17px 0;border-radius:18px;background:#fff;color:#1E9A57;
+    font-size:18px;font-weight:800;text-align:center;border-bottom:7px solid #C9E9D6;
+    transition:transform .08s ease,border-bottom-width .08s ease,margin-bottom .08s ease;cursor:pointer;
+  }
+  .duo-btn:active,.duo-btn.hover{transform:translateY(7px);border-bottom-width:0;margin-bottom:7px;background:#F2FBF5;}
+
+  /* ---------- 答题页 ---------- */
+  #s-quiz{background:#fff;}
+  .q-head{display:flex;align-items:center;gap:12px;padding:16px 22px 10px;flex-shrink:0;}
+  .quit{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#B9C4CC;background:#F3F6F8;cursor:pointer;}
+  .bar-bg{flex:1;height:13px;border-radius:7px;background:#EEF2F5;overflow:hidden;}
+  .bar-fill{height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,#57D98C,#38C976);transition:width .42s cubic-bezier(.25,1,.4,1);}
+  .q-count{font-size:13px;font-weight:800;color:#9BAAB6;min-width:40px;text-align:right;}
+  .q-body{position:relative;flex:1;overflow:hidden;padding:0 22px;}
+  .q-card{position:absolute;left:22px;right:22px;top:10px;transform:translateX(0);opacity:1;
+    will-change:transform,opacity;transition:transform .3s cubic-bezier(.32,.72,.28,1),opacity .26s ease;}
+  .q-card.out{transform:translateX(-104%);opacity:0;}
+  .q-card.snap{transition:none;transform:translateX(104%);opacity:0;}
+  .q-num{font-size:15px;font-weight:900;color:var(--orange);letter-spacing:1px;margin-bottom:6px;}
+  .q-text{font-size:23px;font-weight:900;line-height:1.44;margin-bottom:24px;min-height:100px;}
+  .opt{
+    display:flex;align-items:center;width:100%;padding:15px;margin-bottom:11px;background:#fff;
+    border:2px solid #E9EDF0;border-bottom:7px solid #E1E6EA;border-radius:16px;cursor:pointer;
+    transition:transform .09s,border-bottom-width .09s,margin-bottom .09s,background .14s,border-color .14s;
+  }
+  .opt:active{transform:translateY(7px);border-bottom-width:0;margin-bottom:18px;background:#E9F8EF;border-color:var(--green);}
+  .opt.active{transform:translateY(7px);border-bottom-width:0;margin-bottom:18px;background:#E9F8EF;border-color:var(--green);}
+  .opt-letter{width:28px;height:28px;flex-shrink:0;margin-right:11px;border-radius:9px;background:#F4F7F9;color:#A8B6C0;
+    font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center;}
+  .opt-label{flex:1;font-size:16px;font-weight:700;color:#2C3E50;}
+  .opt.active .opt-letter,.opt:active .opt-letter{background:var(--green);color:#fff;}
+  .opt.active .opt-label,.opt:active .opt-label{color:#1E9A57;}
+  .q-foot{flex-shrink:0;padding:8px 0 14px;text-align:center;font-size:11px;color:#B9C4CC;}
+
+  /* ---------- 计算中 ---------- */
+  #s-loading{align-items:center;justify-content:center;background:#fff;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:5px solid #E9F8EF;border-top-color:var(--green);animation:rot .9s linear infinite;margin-bottom:20px;}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .load-t{font-size:17px;font-weight:800;}
+  .load-s{margin-top:7px;font-size:12px;color:var(--light);}
+
+  /* ---------- 报告页 ---------- */
+  #s-report{background:#F4F7F9;}
+  .r-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+  .r-scroll::-webkit-scrollbar{width:0;}
+  .r-hero{position:relative;padding:24px 22px 20px;background:linear-gradient(140deg,#3FD07E,#1B9350);overflow:hidden;color:#fff;}
+  .r-c1{position:absolute;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.09);top:-60px;right:-40px;}
+  .r-c2{position:absolute;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.09);bottom:-55px;left:-30px;}
+  .r-date{position:relative;font-size:11px;color:rgba(255,255,255,.7);}
+  .r-total-row{position:relative;display:flex;align-items:flex-end;margin-top:5px;}
+  .r-total{font-size:75px;font-weight:900;line-height:1;letter-spacing:-2px;}
+  .r-unit{margin-left:6px;margin-bottom:11px;font-size:13px;font-weight:700;color:rgba(255,255,255,.62);}
+  .r-badge{position:relative;display:inline-block;margin-top:4px;padding:5px 14px;border-radius:20px;background:rgba(255,255,255,.94);color:#1B7F45;font-size:13px;font-weight:800;}
+  .r-desc{position:relative;margin-top:11px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.86);}
+  .r-chips{position:relative;display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;}
+  .r-chip{display:flex;align-items:center;padding:6px 11px;border-radius:7px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);font-size:11.5px;font-weight:700;}
+  .r-chip span.i{margin-right:5px;}
+
+  .r-card{margin:13px 13px 0;padding:20px 18px 18px;background:#fff;border-radius:14px;box-shadow:0 4px 14px rgba(31,90,60,.06);}
+  .r-card-title{display:flex;align-items:center;font-size:17px;font-weight:900;margin-bottom:16px;}
+  .r-card-bar{width:4px;height:16px;border-radius:2px;background:var(--green);margin-right:9px;}
+  .r-row{padding-bottom:13px;margin-bottom:13px;border-bottom:1px dashed #EDF2F5;}
+  .r-row:last-child{padding-bottom:0;margin-bottom:0;border-bottom:none;}
+  .r-row-head{display:flex;align-items:center;justify-content:space-between;}
+  .r-row-name{font-size:15px;font-weight:800;}
+  .r-row-score{font-size:16px;font-weight:900;}
+  .r-track{height:8px;margin:9px 0 7px;border-radius:4px;background:#EBF1F5;overflow:hidden;}
+  .r-fill{height:100%;border-radius:4px;width:0;transition:width .8s cubic-bezier(.25,1,.4,1);}
+  .r-cmt{display:flex;align-items:center;font-size:11.5px;color:var(--sub);}
+  .r-level{flex-shrink:0;margin-right:7px;padding:1px 7px;border-radius:4px;background:#F1F6F9;color:#7A8A97;font-weight:700;}
+  .r-label{font-size:11px;font-weight:700;color:var(--light);letter-spacing:.5px;}
+  .r-value{margin-top:6px;font-size:17px;font-weight:900;color:var(--green-dark);line-height:1.4;}
+  .r-value.dark{color:var(--text);font-size:15px;}
+  .r-para{margin-top:7px;font-size:12.5px;line-height:1.7;color:var(--sub);}
+  .r-dash{height:1px;margin:16px 0;background-image:linear-gradient(90deg,#E3EBF0 0,#E3EBF0 50%,transparent 50%);background-size:8px 1px;}
+  .r-sub{display:flex;align-items:center;margin-top:15px;font-size:14px;font-weight:900;}
+  .r-sub.first{margin-top:0;}
+  .r-dot{width:7px;height:7px;border-radius:50%;margin-right:8px;}
+  .r-dot.o{background:#FFB040;} .r-dot.g{background:var(--green);}
+  .r-advice{margin-top:9px;padding:11px 12px;border-radius:9px;background:#F7FAFC;}
+  .r-advice-name{display:block;font-size:13px;font-weight:800;margin-bottom:5px;}
+  .r-advice-tip{display:block;font-size:12px;line-height:1.7;color:var(--sub);}
+  .r-disc{margin:14px 13px 0;font-size:10.5px;line-height:1.7;color:var(--light);}
+  .r-space{height:20px;}
+  .save-bar{flex-shrink:0;padding:10px 16px 14px;background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 12px rgba(31,90,60,.05);}
+  .save-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:16px 0;border-radius:16px;background:var(--green);
+    border-bottom:6px solid var(--green-deep);color:#fff;font-size:17px;font-weight:900;cursor:pointer;transition:transform .09s,border-bottom-width .09s;}
+  .save-btn:active{transform:translateY(6px);border-bottom-width:0;}
+  .save-btn .ico{margin-right:7px;font-size:16px;}
+  .retry{margin-top:10px;text-align:center;font-size:12px;font-weight:600;color:var(--light);cursor:pointer;}
+
+  /* 图片预览弹层 */
+  .modal{position:fixed;inset:0;background:rgba(15,25,20,.82);display:none;flex-direction:column;align-items:center;z-index:99;}
+  .modal.on{display:flex;}
+  .modal-head{padding:14px 20px;color:#fff;font-size:14px;font-weight:700;width:100%;text-align:center;}
+  .modal-body{flex:1;overflow:auto;padding:0 14px 14px;width:100%;}
+  .modal-body img{display:block;width:100%;border-radius:12px;background:#fff;}
+  .modal-foot{padding:12px 20px 20px;text-align:center;}
+  .modal-tip{color:#7BE0A6;font-size:12.5px;font-weight:700;margin-bottom:10px;}
+  .modal-close{padding:10px 26px;border-radius:24px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+  .hint{position:fixed;left:50%;transform:translateX(-50%);bottom:24px;color:rgba(255,255,255,.75);font-size:12px;}
+  @media (max-width:900px){ .hint{display:none} body{padding:0} .device{width:100%;height:100vh;border-radius:0;box-shadow:none;max-width:480px;} }
+</style>
+</head>
+<body>
+
+<div class="device">
+  <!-- ============ 欢迎页 ============ -->
+  <div class="screen on" id="s-welcome">
+    <div class="decor d1">🌳</div>
+    <div class="decor d2">🏛️</div>
+    <div class="decor d3">🧭</div>
+    <div class="decor d4">📐</div>
+    <div class="w-body">
+      <div class="hero-badge">🏆</div>
+      <div class="hero-title">专业能力边界</div>
+      <div class="hero-title"><span class="hero-hl">探索测评</span></div>
+      <div class="hero-sub">建筑与景观设计专项评估</div>
+      <div class="hero-sub2">只需 3 分钟，生成你的多维能力模型</div>
+      <div class="chips">
+        <div class="chip">⏱ 约 3 分钟</div>
+        <div class="chip">📋 30 道题</div>
+        <div class="chip">📊 9 项细分能力</div>
+      </div>
+    </div>
+    <div class="duo-btn" id="btn-start">开始测评</div>
+    <div class="w-tip">结果仅供个人职业规划参考</div>
+  </div>
+
+  <!-- ============ 答题页 ============ -->
+  <div class="screen" id="s-quiz">
+    <div class="q-head">
+      <div class="quit" id="btn-quit">✕</div>
+      <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
+      <div class="q-count" id="qcount">1/30</div>
+    </div>
+    <div class="q-body">
+      <div class="q-card" id="qcard">
+        <div class="q-num" id="qnum">Q1</div>
+        <div class="q-text" id="qtext"></div>
+        <div id="opts"></div>
+      </div>
+    </div>
+    <div class="q-foot">选择最符合你当前状态的选项</div>
+  </div>
+
+  <!-- ============ 计算中 ============ -->
+  <div class="screen" id="s-loading">
+    <div class="spinner"></div>
+    <div class="load-t">正在生成你的能力报告</div>
+    <div class="load-s">综合 30 项作答 · 计算 9 项细分能力…</div>
+  </div>
+
+  <!-- ============ 报告页 ============ -->
+  <div class="screen" id="s-report">
+    <div class="r-scroll" id="rscroll"></div>
+    <div class="save-bar">
+      <div class="save-btn" id="btn-save"><span class="ico">💾</span>保存测评结果</div>
+      <div class="retry" id="btn-retry">重新测评</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-head" id="modal-head">报告长图已生成</div>
+  <div class="modal-body"><img id="modal-img" alt="报告长图"></div>
+  <div class="modal-foot">
+    <div class="modal-tip" id="modal-tip">长按图片可保存到相册</div>
+    <div class="modal-close" id="modal-close">关闭</div>
+  </div>
+</div>
+
+<div class="hint">网页预览版：交互与小程序一致；长图绘制逻辑复用同一份 reportPainter.js</div>
+
+<script>
+/**
+ * utils/assessment.js
+ * 纯逻辑层：题库 / 维度定义 / 计分 / 诊断报告生成
+ * 不依赖任何平台 API，小程序与浏览器预览可共用。
+ */
+
+/* ---------------- 一、选项（固定 A1 / B2 / C3 / D4） ---------------- */
+var OPTIONS = [
+  { key: 'A', label: '完全不符合', score: 1 },
+  { key: 'B', label: '偶尔可以', score: 2 },
+  { key: 'C', label: '基本可以', score: 3 },
+  { key: 'D', label: '熟练掌握', score: 4 }
+];
+
+/* ---------------- 二、9 个细分能力（含提升建议） ---------------- */
+var SUB_DIMS = [
+  {
+    key: 'space', name: '空间形态把控', icon: '📐', dim: 'design',
+    tip: '多抄绘优秀方案形体，练习场地多方案比选，训练从场地条件推导空间形态。'
+  },
+  {
+    key: 'build', name: '工程落地推演', icon: '🧱', dim: 'design',
+    tip: '多看建成项目图纸、构造节点，学习材料、造价、结构常识，在方案阶段增加落地性自查。'
+  },
+  {
+    key: 'site', name: '场地逻辑研判', icon: '🧭', dim: 'design',
+    tip: '练习场地踏勘、现状分析图绘制，训练日照、风环境、人流组织的分析思维。'
+  },
+  {
+    key: 'value', name: '项目价值研判', icon: '💰', dim: 'planning',
+    tip: '多研读项目可研、定位文本，学习从业主、市场视角理解项目价值与收益逻辑。'
+  },
+  {
+    key: 'format', name: '业态逻辑搭建', icon: '🧩', dim: 'planning',
+    tip: '研究商业与文旅项目案例，梳理业态组合与动线关系，用运营视角反推功能配比。'
+  },
+  {
+    key: 'resource', name: '资源统筹策划', icon: '🤝', dim: 'planning',
+    tip: '参与跨专业协作，练习排布项目节点计划表，复盘多方协同中的卡点与解决路径。'
+  },
+  {
+    key: 'narrative', name: '内容叙事表达', icon: '✍️', dim: 'brand',
+    tip: '多写方案摘要、练习方案汇报，训练精简提炼项目核心亮点。'
+  },
+  {
+    key: 'reach', name: '传播效果把控', icon: '📡', dim: 'brand',
+    tip: '观察优秀项目的传播物料，复盘传播数据，训练"内容—渠道—受众"的匹配判断。'
+  },
+  {
+    key: 'visual', name: '品牌视觉感知', icon: '🎨', dim: 'brand',
+    tip: '建立个人视觉素材库，多做版式与配图练习，训练品牌调性的一致性判断。'
+  }
+];
+
+/* ---------------- 三、3 大底层能力维度 ---------------- */
+var DIMENSIONS = [
+  {
+    key: 'design', name: '建筑景观设计', jobName: '建筑景观设计岗', icon: '🏛️',
+    subs: ['space', 'build', 'site'],
+    direction: '建筑景观设计方向',
+    desc: '主攻方案创作与落地深化，适合走设计院 / 事务所的专业技术路线。'
+  },
+  {
+    key: 'planning', name: '项目策划统筹', jobName: '项目策划统筹岗', icon: '🧭',
+    subs: ['value', 'format', 'resource'],
+    direction: '项目策划统筹方向',
+    desc: '主攻项目定位、业态搭建与资源统筹，适合走地产 / 文旅 / 咨询的策划管理路线。'
+  },
+  {
+    key: 'brand', name: '品牌宣传推广', jobName: '品牌宣传推广岗', icon: '📣',
+    subs: ['narrative', 'reach', 'visual'],
+    direction: '品牌宣传推广方向',
+    desc: '主攻项目叙事、视觉表达与传播运营，适合走品牌 / 市场 / 内容运营路线。'
+  }
+];
+
+/* ---------------- 四、30 道题（顺序即作答顺序） ---------------- */
+var QUESTIONS = [
+  { t: '面对场地条件，你能快速构思多种建筑空间布局方案吗？', sub: 'space' },
+  { t: '能通过形体组织，塑造有辨识度的建筑空间形态吗？', sub: 'space' },
+  { t: '能预判空间尺度、层高、采光等给人的空间感受吗？', sub: 'space' },
+  { t: '可以协调功能需求与空间造型之间的矛盾吗？', sub: 'space' },
+
+  { t: '做方案时，能主动考虑结构可行性、施工难度吗？', sub: 'build' },
+  { t: '能预判材料选型对最终建成效果与造价的影响吗？', sub: 'build' },
+  { t: '方案阶段可识别图纸中容易出现的现场落地风险吗？', sub: 'build' },
+
+  { t: '可以快速解读场地现状：交通、景观、高差、周边建筑关系吗？', sub: 'site' },
+  { t: '能结合日照、风环境等条件，判断建筑最优布局位置吗？', sub: 'site' },
+  { t: '能梳理场地人流、车流动线，判断出入口的合理性吗？', sub: 'site' },
+  { t: '理解场地限制条件，不会脱离场地做理想化方案吗？', sub: 'site' },
+
+  { t: '可以快速理解项目目标、业主诉求与核心价值定位吗？', sub: 'value' },
+  { t: '能识别项目的优势、短板与外部市场机会吗？', sub: 'value' },
+  { t: '能评估方案是否匹配项目投资、收益预期吗？', sub: 'value' },
+  { t: '能判断项目在区域内的差异化竞争力吗？', sub: 'value' },
+
+  { t: '可以梳理业态之间的联动关系，合理排布功能板块吗？', sub: 'format' },
+  { t: '能根据客群特征，判断业态配比是否合理吗？', sub: 'format' },
+  { t: '能预判业态运营逻辑，避免功能布局不利于后期运营吗？', sub: 'format' },
+
+  { t: '项目推进中，能识别需要对接的合作方与相关资源吗？', sub: 'resource' },
+  { t: '可制定阶段性工作节点，协调多方同步推进工作吗？', sub: 'resource' },
+  { t: '在有限时间 / 预算约束下，能调整工作策略达成目标吗？', sub: 'resource' },
+
+  { t: '可以提炼项目核心故事，用简洁逻辑讲清项目亮点吗？', sub: 'narrative' },
+  { t: '撰写方案介绍文本时，逻辑清晰、重点突出吗？', sub: 'narrative' },
+  { t: '汇报时，可以面向不同受众调整表达逻辑吗？', sub: 'narrative' },
+
+  { t: '能判断项目素材适合哪种传播渠道与受众偏好吗？', sub: 'reach' },
+  { t: '能预判宣传内容是否能传递项目核心价值吗？', sub: 'reach' },
+  { t: '可以收集反馈，调整宣传内容提升传播效果吗？', sub: 'reach' },
+
+  { t: '能识别视觉画面气质，判断是否匹配项目品牌调性吗？', sub: 'visual' },
+  { t: '具备基础审美，能对效果图、海报等视觉素材提出修改意见吗？', sub: 'visual' },
+  { t: '理解视觉风格统一性，保证项目物料视觉调性一致吗？', sub: 'visual' }
+];
+
+/* ---------------- 五、工具函数 ---------------- */
+function round1(n) {
+  return Math.round(n * 10) / 10;
+}
+
+/** 细分项等级（与样例报告口径一致：7.8 良好 / 6.7 良好 / 5.6 一般 / 5.0 一般） */
+function levelOf(score) {
+  if (score >= 8.5) return { label: '优秀', comment: '能力突出，可作为核心竞争力' };
+  if (score >= 6.5) return { label: '良好', comment: '能力达标，可继续巩固' };
+  if (score >= 5.0) return { label: '一般', comment: '具备基础能力，有提升空间' };
+  return { label: '待提升', comment: '基础相对薄弱，建议优先补齐' };
+}
+
+/** 岗位适配度标签（5.5 潜力适配 / 6.3 中度适配 / 6.9 中度适配） */
+function fitLabel(score) {
+  if (score >= 7.5) return '高度适配';
+  if (score >= 6.0) return '中度适配';
+  if (score >= 4.5) return '潜力适配';
+  return '待培养';
+}
+
+function titleOf(total) {
+  if (total >= 8.5) return { title: '复合型全能选手', desc: '能力结构全面，已具备直接进入项目一线的底气。' };
+  if (total >= 7.2) return { title: '均衡成长型选手', desc: '各维度发展均衡，优势方向已初步清晰。' };
+  if (total >= 6.0) return { title: '潜力待引爆型选手', desc: '基础扎实，但尚未形成明显长板，需要尽快聚焦主攻方向。' };
+  return { title: '筑基起步型选手', desc: '目前处于起步阶段，建议按短板清单逐项补齐。' };
+}
+
+function pad2(n) {
+  return n < 10 ? '0' + n : '' + n;
+}
+
+function todayStr() {
+  var d = new Date();
+  return d.getFullYear() + '.' + pad2(d.getMonth() + 1) + '.' + pad2(d.getDate());
+}
+
+var SUB_MAP = {};
+SUB_DIMS.forEach(function (s) { SUB_MAP[s.key] = s; });
+var DIM_MAP = {};
+DIMENSIONS.forEach(function (d) { DIM_MAP[d.key] = d; });
+
+/* ---------------- 六、核心：本地算分 + 结构化诊断报告 ---------------- */
+/**
+ * @param {Array<string>} rawAnswers 长度 30，元素为 'A'|'B'|'C'|'D'
+ * @return {Object} 可直接用于结果页渲染 / Canvas 绘制 / 云数据库存储的报告对象
+ */
+function buildReport(rawAnswers) {
+  var answers = (rawAnswers || []).slice(0, QUESTIONS.length);
+
+  /* 1. 每题原始分 */
+  var points = [];
+  for (var i = 0; i < QUESTIONS.length; i++) {
+    var k = answers[i];
+    var opt = null;
+    for (var j = 0; j < OPTIONS.length; j++) {
+      if (OPTIONS[j].key === k) { opt = OPTIONS[j]; break; }
+    }
+    points.push(opt ? opt.score : 0);
+  }
+
+  /* 2. 9 个细分项得分：题均分 × 2.5，映射到 0-10 分制 */
+  var detailScores = SUB_DIMS.map(function (s) {
+    var sum = 0, n = 0;
+    for (var i = 0; i < QUESTIONS.length; i++) {
+      if (QUESTIONS[i].sub === s.key) { sum += points[i]; n++; }
+    }
+    var score = n ? round1((sum / n) * 2.5) : 0;
+    var lv = levelOf(score);
+    return {
+      key: s.key,
+      name: s.name,
+      icon: s.icon,
+      score: score,
+      scoreText: score.toFixed(1),
+      percent: Math.max(2, Math.round(score * 10)),
+      level: lv.label,
+      comment: lv.comment,
+      tip: s.tip
+    };
+  });
+
+  var subScore = {};
+  detailScores.forEach(function (d) { subScore[d.key] = d.score; });
+
+  /* 3. 3 大维度岗位适配度 = 所属 3 个细分项均值 */
+  var jobFit = DIMENSIONS.map(function (d) {
+    var sum = 0;
+    d.subs.forEach(function (k) { sum += subScore[k]; });
+    var score = round1(sum / d.subs.length);
+    return {
+      key: d.key,
+      name: d.jobName + '适配度',
+      shortName: d.jobName,
+      direction: d.direction,
+      icon: d.icon,
+      score: score,
+      scoreText: score.toFixed(1),
+      percent: Math.max(2, Math.round(score * 10)),
+      label: fitLabel(score)
+    };
+  });
+
+  /* 4. 综合得分 */
+  var totalRaw = 0;
+  detailScores.forEach(function (d) { totalRaw += d.score; });
+  var total = round1(totalRaw / detailScores.length);
+  var t = titleOf(total);
+
+  /* 5. 排序 → 主推方向 / 交叉潜力方向 */
+  var ranked = jobFit.slice().sort(function (a, b) { return b.score - a.score; });
+  var top = ranked[0], second = ranked[1];
+  var canCross = second.score >= 6.5 && (top.score - second.score) <= 1.0;
+
+  jobFit.forEach(function (j) { j.isTop = (j.key === top.key); });
+
+  var recommendDir = {
+    main: top.direction,
+    mainDesc: DIM_MAP[top.key].desc,
+    mainScore: top.score,
+    cross: canCross
+      ? '可向「' + second.direction + '」交叉拓展'
+      : '暂无明显跨方向交叉优势，建议深耕主赛道',
+    crossDesc: canCross
+      ? '「' + top.shortName + '」与「' + second.shortName + '」适配度接近，可尝试两者交叉的复合岗位（如设计＋策划、策划＋内容）。'
+      : '先把主赛道能力补齐到 7 分以上，再考虑跨方向迁移，避免样样都会、样样不精。'
+  };
+
+  /* 6. 优势 / 短板 */
+  var strong = detailScores.filter(function (d) { return d.score >= 7.5; })
+    .sort(function (a, b) { return b.score - a.score; });
+
+  var weakPool = detailScores.slice().sort(function (a, b) { return a.score - b.score; });
+  var weak = weakPool.filter(function (d) { return d.score < 7.0; });
+  var weaknessList = (weak.length >= 3 ? weak : weakPool).slice(0, 5);
+
+  var advice = {
+    strengthTitle: '优势巩固',
+    strength: strong.length
+      ? '你的「' + strong.slice(0, 2).map(function (s) { return s.name; }).join('」「') +
+        '」表现相对突出（最高 ' + strong[0].score.toFixed(1) + ' 分），建议持续强化，作为求职核心竞争力。'
+      : '暂无突出优势维度，建议持续强化，作为求职核心竞争力。',
+    strengthList: strong.slice(0, 3).map(function (s) { return s.name + ' ' + s.score.toFixed(1) + ' 分'; }),
+    weaknessTitle: '短板提升',
+    weaknesses: weaknessList.map(function (d) {
+      return { name: d.name, score: d.score, tip: d.tip };
+    })
+  };
+
+  /* 7. 组装最终 JSON */
+  return {
+    version: '1.0.0',
+    total: total,
+    totalText: total.toFixed(1),
+    levelLabel: levelOf(total).label,
+    levelTitle: t.title,
+    levelDesc: t.desc,
+    date: todayStr(),
+    detailScores: detailScores,
+    jobFit: jobFit,
+    recommendDir: recommendDir,
+    advice: advice,
+    disclaimer: '本测评仅为自评诊断，结果仅供个人职业规划参考，不代表专业能力的最终评定。'
+  };
+}
+
+var Assessment = {
+  OPTIONS: OPTIONS,
+  SUB_DIMS: SUB_DIMS,
+  DIMENSIONS: DIMENSIONS,
+  QUESTIONS: QUESTIONS,
+  levelOf: levelOf,
+  fitLabel: fitLabel,
+  buildReport: buildReport
+};
+
+/* 双模式导出：小程序走 CommonJS，浏览器预览挂到 window */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = Assessment;
+}
+if (typeof window !== 'undefined') {
+  window.Assessment = Assessment;
+}
+
+</script>
+<script>
+/**
+ * utils/reportPainter.js
+ * 报告长图绘制器（Canvas 2D）
+ * ---------------------------------------------------------------
+ * 设计思路：
+ *   build()   —— 负责「排版 + 测量」，产出可绘制的 block 列表与总高度
+ *   measure() —— 只取总高度（用于先设置 canvas.height）
+ *   paint()   —— 按 block 逐段落笔
+ * 之所以测量 / 绘制分离：Canvas 2D 必须先确定 height 再画，
+ * 而长图高度只能靠 measureText 逐行累加算出来。
+ *
+ * 同时兼容：微信小程序 Canvas 2D node / 浏览器 HTMLCanvasElement
+ */
+
+var C = {
+  green: '#38C976',
+  greenDeep: '#1E9A57',
+  text: '#22313F',
+  sub: '#647585',
+  light: '#9BAAB6',
+  line: '#EEF3F6',
+  bg: '#F4F7F9',
+  white: '#FFFFFF'
+};
+
+var W_DEFAULT = 750;
+var PAD = 44;
+var GAP = 28;
+
+var F = {
+  eyebrow: '400 21px sans-serif',
+  h1: 'bold 40px sans-serif',
+  score: 'bold 116px sans-serif',
+  pill: 'bold 25px sans-serif',
+  h2: 'bold 33px sans-serif',
+  h3: 'bold 28px sans-serif',
+  name: 'bold 29px sans-serif',
+  body: '400 24px sans-serif',
+  small: '400 22px sans-serif',
+  num: 'bold 31px sans-serif'
+};
+
+/* ---------------- 基础绘图工具 ---------------- */
+function roundRect(ctx, x, y, w, h, r) {
+  var rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.lineTo(x + w - rr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+  ctx.lineTo(x + w, y + h - rr);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+  ctx.lineTo(x + rr, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+  ctx.lineTo(x, y + rr);
+  ctx.quadraticCurveTo(x, y, x + rr, y);
+  ctx.closePath();
+}
+
+/** 文本自动换行（按字符宽度逐字累加，兼容中英文混排，并规避行首标点） */
+var NO_LINE_START = '，。、；：？！）】》」』%…,.;:?!)]}';
+
+function wrap(ctx, text, maxWidth, font) {
+  ctx.font = font;
+  var str = String(text == null ? '' : text);
+  var lines = [];
+  var line = '';
+  for (var i = 0; i < str.length; i++) {
+    var ch = str.charAt(i);
+    if (ch === '\n') { lines.push(line); line = ''; continue; }
+    var over = ctx.measureText(line + ch).width > maxWidth;
+    // 行首禁则：标点不能出现在行首，允许本行溢出一点
+    if (over && line && NO_LINE_START.indexOf(ch) < 0) {
+      lines.push(line);
+      line = ch;
+    } else {
+      line += ch;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.length ? lines : [''];
+}
+
+function scoreColor(s) {
+  if (s >= 8) return '#1E9A57';
+  if (s >= 7) return '#38C976';
+  if (s >= 6) return '#F0A227';
+  if (s >= 5) return '#FF9F43';
+  return '#FF7A59';
+}
+
+function drawPill(ctx, x, y, text, font, color, bg, height, padX) {
+  ctx.font = font;
+  var tw = ctx.measureText(text).width;
+  var w = tw + padX * 2;
+  ctx.fillStyle = bg;
+  roundRect(ctx, x, y, w, height, height / 2);
+  ctx.fill();
+  var fs = 22;
+  var m = /(\d+)px/.exec(font);
+  if (m) fs = parseInt(m[1], 10);
+  ctx.fillStyle = color;
+  ctx.fillText(text, x + padX, y + (height - fs) / 2 - 1);
+  return w;
+}
+
+function drawBar(ctx, x, y, w, h, percent, color) {
+  ctx.fillStyle = '#EBF1F5';
+  roundRect(ctx, x, y, w, h, h / 2);
+  ctx.fill();
+  var pw = Math.max(h, w * Math.min(1, Math.max(0, percent)));
+  ctx.fillStyle = color;
+  roundRect(ctx, x, y, pw, h, h / 2);
+  ctx.fill();
+}
+
+/** 卡片标题：左侧绿色竖条 + 标题 */
+function drawCardTitle(ctx, x, y, text) {
+  ctx.fillStyle = C.green;
+  roundRect(ctx, x, y + 8, 8, 30, 4);
+  ctx.fill();
+  ctx.font = F.h2;
+  ctx.fillStyle = C.text;
+  ctx.fillText(text, x + 24, y);
+  return 46;
+}
+
+/** 卡片底板 */
+function drawCardBg(ctx, x, y, w, h) {
+  ctx.save();
+  ctx.shadowColor = 'rgba(31,90,60,0.07)';
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetY = 6;
+  ctx.fillStyle = C.white;
+  roundRect(ctx, x, y, w, h, 26);
+  ctx.fill();
+  ctx.restore();
+}
+
+function dashedLine(ctx, x1, y, x2) {
+  ctx.save();
+  ctx.strokeStyle = '#E3EBF0';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 8]);
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x2, y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* ---------------- 核心：排版 + 测量 ---------------- */
+function build(ctx, report, W) {
+  W = W || W_DEFAULT;
+  var innerW = W - PAD * 2;
+  var padX = PAD + 36;          // 卡片内文字左边距
+  var textW = innerW - 72;      // 卡片内可用宽度
+  var blocks = [];
+
+  function add(h, draw) { blocks.push({ h: h, draw: draw }); }
+  function addGap(h) { add(h, function () {}); }
+
+  /* ========== 1. 头部大图块 ========== */
+  var HEAD_H = 400;
+  add(HEAD_H, function (c, y) {
+    var g = c.createLinearGradient(0, y, W, y + HEAD_H);
+    g.addColorStop(0, '#3FD07E');
+    g.addColorStop(1, '#1B9350');
+    c.fillStyle = g;
+    c.fillRect(0, y, W, HEAD_H);
+
+    c.fillStyle = 'rgba(255,255,255,0.09)';
+    c.beginPath(); c.arc(W - 20, y + 10, 180, 0, Math.PI * 2); c.fill();
+    c.beginPath(); c.arc(W - 200, y + HEAD_H + 30, 120, 0, Math.PI * 2); c.fill();
+
+    c.textBaseline = 'top';
+    c.fillStyle = 'rgba(255,255,255,0.72)';
+    c.font = F.eyebrow;
+    c.fillText('ARCHITECTURE & LANDSCAPE · CAPABILITY REPORT', PAD, y + 52);
+
+    c.fillStyle = '#FFFFFF';
+    c.font = F.h1;
+    c.fillText('建筑与景观综合能力测评报告', PAD, y + 92);
+
+    c.font = F.score;
+    var st = Number(report.total).toFixed(1);
+    c.fillText(st, PAD - 4, y + 152);
+    var sw = c.measureText(st).width;
+
+    c.font = F.small;
+    c.fillStyle = 'rgba(255,255,255,0.62)';
+    c.fillText('/ 10.0', PAD + sw + 8, y + 226);
+
+    var pillText = report.levelLabel + ' · ' + report.levelTitle;
+    c.font = F.pill;
+    var pw = c.measureText(pillText).width + 40;
+    drawPill(c, W - PAD - pw, y + 190, pillText, F.pill, '#1B7F45', 'rgba(255,255,255,0.92)', 52, 20);
+
+    c.fillStyle = 'rgba(255,255,255,0.66)';
+    c.font = F.small;
+    c.fillText('生成时间 ' + report.date + '   ·   30 题 / 3 大维度 / 9 项细分能力', PAD, y + 336);
+  });
+
+  addGap(GAP);
+
+  /* ========== 2. 各维度能力评价 ========== */
+  var rows1 = report.detailScores.map(function (d) {
+    var cmt = wrap(ctx, d.comment, textW, F.body);
+    return { d: d, cmt: cmt, h: 76 + cmt.length * 33 + 24 };
+  });
+  var rows1H = rows1.reduce(function (s, r) { return s + r.h; }, 0) - 24;
+  var card1H = 40 * 2 + 46 + 22 + rows1H;
+
+  add(card1H + GAP, function (c, y) {
+    drawCardBg(c, PAD, y, innerW, card1H);
+    var cy = y + 40;
+    cy += drawCardTitle(c, padX, cy, '各维度能力评价');
+    cy += 22;
+
+    rows1.forEach(function (r) {
+      var d = r.d;
+      c.font = F.name;
+      c.fillStyle = C.text;
+      c.fillText(d.name, padX, cy + 2);
+
+      c.font = F.num;
+      c.fillStyle = scoreColor(d.score);
+      var sc = d.score.toFixed(1) + '分';
+      var scw = c.measureText(sc).width;
+      c.fillText(sc, padX + textW - scw, cy);
+
+      c.font = F.small;
+      c.fillStyle = C.light;
+      var lvw = c.measureText(d.level).width;
+      c.fillText(d.level, padX + textW - scw - 14 - lvw, cy + 8);
+
+      drawBar(c, padX, cy + 48, textW, 16, d.percent / 100, scoreColor(d.score));
+
+      c.font = F.body;
+      c.fillStyle = C.sub;
+      var ly = cy + 76;
+      r.cmt.forEach(function (l) { c.fillText(l, padX, ly); ly += 33; });
+
+      cy += r.h;
+    });
+  });
+
+  /* ========== 3. 职业方向适配诊断 ========== */
+  var fitRowH = 132;
+  var card2H = 40 * 2 + 46 + 22 + report.jobFit.length * fitRowH - 22 + 8;
+
+  add(card2H + GAP, function (c, y) {
+    drawCardBg(c, PAD, y, innerW, card2H);
+    var cy = y + 40;
+    cy += drawCardTitle(c, padX, cy, '职业方向适配诊断');
+    cy += 22;
+
+    report.jobFit.forEach(function (j) {
+      c.font = F.name;
+      c.fillStyle = C.text;
+      c.fillText(j.shortName, padX, cy + 2);
+      var nameW = c.measureText(j.shortName).width;   // 必须用同一字体测量
+
+      if (j.isTop) {
+        drawPill(c, padX + nameW + 16, cy + 3, '主推', 'bold 20px sans-serif', '#1E9A57', '#E6F7EE', 34, 14);
+      }
+
+      c.font = F.num;
+      c.fillStyle = scoreColor(j.score);
+      var sc = j.score.toFixed(1) + '分';
+      var scw = c.measureText(sc).width;
+      c.fillText(sc, padX + textW - scw, cy);
+
+      drawBar(c, padX, cy + 48, textW, 16, j.percent / 100, scoreColor(j.score));
+
+      c.font = F.small;
+      c.fillStyle = C.sub;
+      c.fillText('👉 岗位适配度：' + j.score.toFixed(1) + ' 分 ｜ ' + j.label, padX, cy + 80);
+
+      cy += fitRowH;
+      if (j !== report.jobFit[report.jobFit.length - 1]) {
+        dashedLine(c, padX, cy - 22, padX + textW);
+      }
+    });
+  });
+
+  /* ========== 4. 推荐发展方向 ========== */
+  var mainLines = wrap(ctx, report.recommendDir.mainDesc, textW, F.body);
+  var crossLines = wrap(ctx, report.recommendDir.crossDesc, textW, F.body);
+  var blockA = 28 + 6 + 42 + 12 + mainLines.length * 33;
+  var blockB = 28 + 6 + 36 + 12 + crossLines.length * 33;
+  var card3H = 40 * 2 + 46 + 22 + blockA + 50 + blockB;
+
+  add(card3H + GAP, function (c, y) {
+    drawCardBg(c, PAD, y, innerW, card3H);
+    var cy = y + 40;
+    cy += drawCardTitle(c, padX, cy, '推荐发展方向');
+    cy += 22;
+
+    // 主推荐
+    c.font = F.small;
+    c.fillStyle = C.light;
+    c.fillText('主推荐方向', padX, cy);
+    cy += 28 + 6;
+
+    c.font = F.h3;
+    c.fillStyle = C.greenDeep;
+    c.fillText(report.recommendDir.main, padX, cy);
+    cy += 42 + 12;
+
+    c.font = F.body;
+    c.fillStyle = C.sub;
+    mainLines.forEach(function (l) { c.fillText(l, padX, cy); cy += 33; });
+
+    cy += 18;
+    dashedLine(c, padX, cy, padX + textW);
+    cy += 32;
+
+    // 交叉潜力
+    c.font = F.small;
+    c.fillStyle = C.light;
+    c.fillText('交叉潜力方向', padX, cy);
+    cy += 28 + 6;
+
+    c.font = F.h3;
+    c.fillStyle = C.text;
+    c.fillText(report.recommendDir.cross, padX, cy);
+    cy += 36 + 12;
+
+    c.font = F.body;
+    c.fillStyle = C.sub;
+    crossLines.forEach(function (l) { c.fillText(l, padX, cy); cy += 33; });
+  });
+
+  /* ========== 5. 个人提升建议 ========== */
+  var adv = report.advice;
+  var strengthLines = wrap(ctx, adv.strength, textW, F.body);
+  var itemBlocks = adv.weaknesses.map(function (w) {
+    var lines = wrap(ctx, '· ' + w.name + '：' + w.tip, textW, F.body);
+    return { w: w, lines: lines, h: lines.length * 33 + 18 };
+  });
+  var itemsH = itemBlocks.reduce(function (s, i) { return s + i.h; }, 0);
+  var card4H = 40 * 2 + 46 + 22 + 38 + strengthLines.length * 33 + 26 + 38 + itemsH;
+
+  add(card4H + GAP, function (c, y) {
+    drawCardBg(c, PAD, y, innerW, card4H);
+    var cy = y + 40;
+    cy += drawCardTitle(c, padX, cy, '个人提升建议');
+    cy += 22;
+
+    // 优势巩固
+    c.fillStyle = '#FFB040';
+    c.beginPath(); c.arc(padX + 7, cy + 17, 7, 0, Math.PI * 2); c.fill();
+    c.font = F.h3;
+    c.fillStyle = C.text;
+    c.fillText(adv.strengthTitle, padX + 26, cy + 2);
+    cy += 38;
+
+    c.font = F.body;
+    c.fillStyle = C.sub;
+    strengthLines.forEach(function (l) { c.fillText(l, padX, cy); cy += 33; });
+    cy += 26;
+
+    // 短板提升
+    c.fillStyle = C.green;
+    c.beginPath(); c.arc(padX + 7, cy + 17, 7, 0, Math.PI * 2); c.fill();
+    c.font = F.h3;
+    c.fillStyle = C.text;
+    c.fillText(adv.weaknessTitle, padX + 26, cy + 2);
+    cy += 38;
+
+    itemBlocks.forEach(function (it) {
+      c.font = F.body;
+      c.fillStyle = C.sub;
+      var ly = cy;
+      it.lines.forEach(function (l, i) {
+        if (i === 0) {
+          c.fillStyle = C.text;
+          c.font = F.body;
+        } else {
+          c.fillStyle = C.sub;
+        }
+        c.fillText(l, padX, ly);
+        ly += 33;
+      });
+      cy += it.h;
+    });
+  });
+
+  addGap(GAP);
+
+  /* ========== 6. 免责声明 ========== */
+  var disLines = wrap(ctx, '⚠️ 提示：' + report.disclaimer, innerW - 8, F.small);
+  var footH = disLines.length * 32 + 40;
+
+  add(footH, function (c, y) {
+    c.font = F.small;
+    c.fillStyle = C.light;
+    var ly = y + 10;
+    disLines.forEach(function (l) { c.fillText(l, PAD + 4, ly); ly += 32; });
+  });
+
+  addGap(36);
+
+  var height = blocks.reduce(function (s, b) { return s + b.h; }, 0);
+  return { blocks: blocks, height: Math.round(height) };
+}
+
+/* ---------------- 对外 API ---------------- */
+function measureReport(ctx, report, W) {
+  ctx.textBaseline = 'top';
+  return build(ctx, report, W || W_DEFAULT).height;
+}
+
+function paintReport(ctx, report, W) {
+  W = W || W_DEFAULT;
+  ctx.textBaseline = 'top';
+  var res = build(ctx, report, W);
+
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, res.height);
+
+  var y = 0;
+  res.blocks.forEach(function (b) {
+    ctx.save();
+    ctx.textBaseline = 'top';
+    b.draw(ctx, y);
+    ctx.restore();
+    y += b.h;
+  });
+
+  return res.height;
+}
+
+var ReportPainter = { measureReport: measureReport, paintReport: paintReport, WIDTH: W_DEFAULT };
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ReportPainter;
+}
+if (typeof window !== 'undefined') {
+  window.ReportPainter = ReportPainter;
+}
+
+</script>
+<script>
+(function () {
+  var A = window.Assessment;
+  var P = window.ReportPainter;
+  var TOTAL = A.QUESTIONS.length;
+
+  var answers = new Array(TOTAL).fill('');
+  var cur = 0;
+  var locked = false;
+  var report = null;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id) {
+    ['s-welcome', 's-quiz', 's-loading', 's-report'].forEach(function (k) {
+      $(k).classList.toggle('on', k === id);
+    });
+  };
+
+  function colorOf(s) {
+    if (s >= 8) return '#1E9A57';
+    if (s >= 7) return '#38C976';
+    if (s >= 6) return '#F0A227';
+    if (s >= 5) return '#FF9F43';
+    return '#FF7A59';
+  }
+
+  /* ---------------- 答题 ---------------- */
+  function renderQuestion() {
+    $('qnum').textContent = 'Q' + (cur + 1);
+    $('qtext').textContent = A.QUESTIONS[cur].t;
+    $('qcount').textContent = (cur + 1) + '/' + TOTAL;
+    $('bar').style.width = (cur / TOTAL * 100) + '%';
+    var box = $('opts');
+    box.innerHTML = '';
+    A.OPTIONS.forEach(function (o) {
+      var el = document.createElement('div');
+      el.className = 'opt';
+      el.innerHTML = '<div class="opt-letter">' + o.key + '</div><div class="opt-label">' + o.label + '</div>';
+      el.onclick = function () { choose(o.key, el); };
+      box.appendChild(el);
+    });
+  }
+
+  function choose(key, el) {
+    if (locked) return;
+    locked = true;
+    answers[cur] = key;
+    el.classList.add('active');
+    if (navigator.vibrate) { try { navigator.vibrate(18); } catch (e) {} }
+
+    var card = $('qcard');
+    setTimeout(function () {
+      card.classList.add('out');
+      setTimeout(function () {
+        if (cur + 1 >= TOTAL) {
+          card.classList.remove('out');
+          startCompute();
+          return;
+        }
+        cur++;
+        renderQuestion();
+        /* 换数据后瞬移到右侧不可见位，下一帧移除即滑入（全程只用 transition） */
+        card.classList.remove('out');
+        card.classList.add('snap');
+        void card.offsetWidth;
+        card.classList.remove('snap');
+        setTimeout(function () { locked = false; }, 320);
+      }, 320);
+    }, 280);
+  }
+
+  function startCompute() {
+    $('bar').style.width = '100%';
+    show('s-loading');
+    setTimeout(function () {
+      report = A.buildReport(answers.slice());
+      report.detailScores.forEach(function (d) { d.color = colorOf(d.score); });
+      report.jobFit.forEach(function (d) { d.color = colorOf(d.score); });
+      renderReport();
+      show('s-report');
+      setTimeout(function () {
+        document.querySelectorAll('.r-fill').forEach(function (el) {
+          el.style.width = el.dataset.w + '%';
+        });
+      }, 60);
+    }, 700);
+  }
+
+  /* ---------------- 报告渲染 ---------------- */
+  function renderReport() {
+    var r = report, h = '';
+
+    h += '<div class="r-hero">';
+    h += '<div class="r-c1"></div><div class="r-c2"></div>';
+    h += '<div class="r-date">生成时间 ' + r.date + '</div>';
+    h += '<div class="r-total-row"><div class="r-total">' + r.total.toFixed(1) + '</div><div class="r-unit">/ 10.0</div></div>';
+    h += '<div class="r-badge">' + r.levelLabel + ' · ' + r.levelTitle + '</div>';
+    h += '<div class="r-desc">' + r.levelDesc + '</div>';
+    h += '<div class="r-chips">';
+    r.jobFit.forEach(function (j) {
+      h += '<div class="r-chip"><span class="i">' + j.icon + '</span>' + j.shortName + ' ' + j.score.toFixed(1) + '</div>';
+    });
+    h += '</div></div>';
+
+    // 各维度能力评价
+    h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>各维度能力评价</div>';
+    r.detailScores.forEach(function (d) {
+      h += '<div class="r-row">';
+      h += '<div class="r-row-head"><div class="r-row-name">' + d.icon + ' ' + d.name + '</div>' +
+           '<div class="r-row-score" style="color:' + d.color + '">' + d.score.toFixed(1) + '分</div></div>';
+      h += '<div class="r-track"><div class="r-fill" data-w="' + d.percent + '" style="background:' + d.color + '"></div></div>';
+      h += '<div class="r-cmt"><span class="r-level">' + d.level + '</span>' + d.comment + '</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+
+    // 职业方向适配诊断
+    h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>职业方向适配诊断</div>';
+    r.jobFit.forEach(function (j) {
+      h += '<div class="r-row">';
+      h += '<div class="r-row-head"><div class="r-row-name">' + j.shortName +
+           (j.isTop ? ' <span class="r-level" style="background:#E6F7EE;color:#1E9A57">主推</span>' : '') + '</div>' +
+           '<div class="r-row-score" style="color:' + j.color + '">' + j.score.toFixed(1) + '分</div></div>';
+      h += '<div class="r-track"><div class="r-fill" data-w="' + j.percent + '" style="background:' + j.color + '"></div></div>';
+      h += '<div class="r-cmt">👉 岗位适配度：' + j.score.toFixed(1) + ' 分 ｜ ' + j.label + '</div>';
+      h += '</div>';
+    });
+    h += '</div>';
+
+    // 推荐发展方向
+    h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>推荐发展方向</div>';
+    h += '<div class="r-label">主推荐方向</div>';
+    h += '<div class="r-value">' + r.recommendDir.main + '</div>';
+    h += '<div class="r-para">' + r.recommendDir.mainDesc + '</div>';
+    h += '<div class="r-dash"></div>';
+    h += '<div class="r-label">交叉潜力方向</div>';
+    h += '<div class="r-value dark">' + r.recommendDir.cross + '</div>';
+    h += '<div class="r-para">' + r.recommendDir.crossDesc + '</div>';
+    h += '</div>';
+
+    // 个人提升建议
+    h += '<div class="r-card"><div class="r-card-title"><div class="r-card-bar"></div>个人提升建议</div>';
+    h += '<div class="r-sub first"><div class="r-dot o"></div>' + r.advice.strengthTitle + '</div>';
+    h += '<div class="r-para">' + r.advice.strength + '</div>';
+    h += '<div class="r-sub"><div class="r-dot g"></div>' + r.advice.weaknessTitle + '</div>';
+    r.advice.weaknesses.forEach(function (w) {
+      h += '<div class="r-advice"><span class="r-advice-name">· ' + w.name + '</span>' +
+           '<span class="r-advice-tip">' + w.tip + '</span></div>';
+    });
+    h += '</div>';
+
+    h += '<div class="r-disc">⚠️ 提示：' + r.disclaimer + '</div>';
+    h += '<div class="r-space"></div>';
+
+    $('rscroll').innerHTML = h;
+    $('rscroll').scrollTop = 0;
+  }
+
+  /* ---------------- 长图绘制（复用 reportPainter.js） ---------------- */
+  var IS_WX = /MicroMessenger/i.test(navigator.userAgent);
+
+  function saveImage() {
+    if (!report) return;
+    var W = P.WIDTH;
+    var canvas = document.createElement('canvas');
+
+    var mctx = canvas.getContext('2d');
+    var H = P.measureReport(mctx, report, W);
+
+    // iOS / 微信内置浏览器对画布有单边 4096px 与总像素上限，
+    // 长图必须按实际高度反推倍率，否则 toDataURL 会返回空白图。
+    var MAXDIM = 4096;
+    var dpr = Math.min(window.devicePixelRatio || 2, 2);
+    dpr = Math.max(1, Math.min(dpr, MAXDIM / Math.max(W, H)));
+
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    ctx.textBaseline = 'top';
+    P.paintReport(ctx, report, W);
+
+    setTimeout(function () {
+      var url;
+      try {
+        url = canvas.toDataURL('image/png');
+      } catch (e) {
+        alert('图片生成失败，请截屏保存');
+        return;
+      }
+
+      $('modal-img').src = url;
+      $('modal-head').textContent = IS_WX ? '报告长图已生成' : '报告长图已生成（已开始下载）';
+      $('modal-tip').textContent = IS_WX ? '长按图片 → 保存到相册' : '长按图片也可另存为';
+      $('modal').classList.add('on');
+
+      if (!IS_WX) {
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = '建筑景观能力测评报告_' + report.date.replace(/\./g, '') + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    }, 80);
+  }
+
+  /* ---------------- 事件绑定 ---------------- */
+  $('btn-start').onclick = function () {
+    answers = new Array(TOTAL).fill('');
+    cur = 0; locked = true;
+    show('s-quiz');
+    renderQuestion();
+    var card = $('qcard');
+    card.classList.add('snap');
+    void card.offsetWidth;
+    card.classList.remove('snap');
+    setTimeout(function () { locked = false; }, 320);
+  };
+
+  $('btn-quit').onclick = function () { location.reload(); };
+  $('btn-retry').onclick = function () { location.reload(); };
+  $('btn-save').onclick = saveImage;
+  $('modal-close').onclick = function () { $('modal').classList.remove('on'); };
+
+  /* ---------------- 演示直达：#quiz / #demo ---------------- */
+  window.__demoCanvas = function () {
+    return { report: report, saveImage: saveImage, painter: P };
+  };
+
+  if (location.hash === '#quiz') {
+    setTimeout(function () { $('btn-start').click(); }, 60);
+  }
+  if (location.hash === '#demo') {
+    var pattern = [2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 4, 4, 3, 4, 4, 3, 2, 2, 3, 3, 3, 2, 3, 3, 2];
+    answers = pattern.map(function (s) { return ['A', 'B', 'C', 'D'][s - 1]; });
+    cur = TOTAL - 1;
+    setTimeout(function () { startCompute(); }, 60);
+  }
+})();
+</script>
+</body>
+</html>
